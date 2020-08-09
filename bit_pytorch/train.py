@@ -165,11 +165,15 @@ def main(args):
   device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
   logger.info(f"Going to train on {device}")
 
-  train_set, valid_set, train_loader, valid_loader = mktrainval(args, logger)
+  #train_set, valid_set, train_loader, valid_loader = mktrainval(args, logger)
 
   logger.info(f"Loading model from {args.model}.npz")
-  model = models.KNOWN_MODELS[args.model](head_size=len(valid_set.classes), zero_head=True)
+  #model = models.KNOWN_MODELS[args.model](head_size=len(valid_set.classes), zero_head=True)
+  model = models.KNOWN_MODELS[args.model](head_size=42, zero_head=True)
   model.load_from(np.load(f"{args.model}.npz"))
+
+  import sys
+  sys.exit()
 
   logger.info("Moving model onto all GPUs")
   model = torch.nn.DataParallel(model)
